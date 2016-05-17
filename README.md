@@ -1,11 +1,11 @@
 # Elm-drag
 Experimenting drag and drop usage in Elm lang.
 
-Each d&d event is handled just like any event in Elm - by sending a message to the `Signal.Address A`.
+Each d&d event is handled just like any event in Elm - by sending a message.
 
-There has to be an `Action` for `dragstart`, `dragenter`, `dragend` and `drop` event, to make proper use of drag and drop with Elm-drag.
+There has to be an `Msg` for `dragstart`, `dragenter`, `dragend` and `drop` event, to make proper use of drag and drop with Elm-drag.
 
-There are native module `Native.HtmlDrag` with only one function: `dragOverPrevent: Html.Attribute` which registers eventListener with `event.preventDefault()` inside, without possibility to call anything on Elm side. DragOver has to be prevented in order for `drop` event to be triggered. Preventing it by using `onWithOptions` from `Html.Events` module would cause every `dragOver` event to trigger new Elm Action which would make mess with NoOp actions that elm architecture debbugging would capture.
+To make `drop` event work, `dragover` event must call `event.preventDefault()`. To do so there is attribute named `dragOverPrevent` which must be provided with `Msg` type that will invoke `update` function. This is because `onWithOptions` must successfully run Json decoder to make use of provided options. That's why there always should be some sort of `NoOp` `Msg` type that won't change. As for now Time-travelling debugger doesn't work with elm 0.17 so a lot of empty messages won't be a problem.
 
 Chess example are inspired by [React-drag-and-drop](https://gaearon.github.io/react-dnd/docs-tutorial.html) tutorial.
 

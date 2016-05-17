@@ -1,8 +1,7 @@
-module Chess.Board where
+module Chess.Board exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Signal exposing (Address)
 import Array
 
 import Chess.Utils exposing (..)
@@ -16,10 +15,10 @@ boardStyle =
   , ("flex-wrap", "wrap")
   ]
 
-view : Model -> Address Action -> Html
-view model address =
+view : Model -> Html Msg
+view model =
   let
-    squares = viewSquares model address
+    squares = viewSquares model
   in
     div
       [ style boardStyle ]
@@ -52,8 +51,8 @@ canDropKnight tilePos {isKnightDragged, knight} =
   else
     False
 
-viewSquares : Model -> Address Action -> List Html
-viewSquares model address = 
+viewSquares : Model -> List (Html Msg)
+viewSquares model = 
   List.map (\pos ->
     let
       model' = 
@@ -66,5 +65,5 @@ viewSquares model address =
     in
       div
         [ style squareStyle ]
-        [ BoardSquare.view model' address ]
+        [ BoardSquare.view model' ]
   ) boardList 

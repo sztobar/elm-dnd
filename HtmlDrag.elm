@@ -1,28 +1,25 @@
-module HtmlDrag where
+module HtmlDrag exposing (..)
 
 import Html exposing (Attribute)
 import Html.Events exposing (on, onWithOptions, Options)
-import Json.Decode exposing (value)
-import Signal exposing (Mailbox, mailbox)
+import Json.Decode as Json
 
-import Native.HtmlDrag
+onDrop : msg -> Attribute msg
+onDrop msg =
+  on "drop" (Json.succeed msg)
 
-onDrop : Signal.Address a -> a -> Attribute
-onDrop addr msg =
-  on "drop" value (\_ -> Signal.message addr msg)
+onDragStart : msg -> Attribute msg
+onDragStart msg =
+  on "dragstart" (Json.succeed msg)
 
-onDragStart : Signal.Address a -> a -> Attribute
-onDragStart addr msg =
-  on "dragstart" value (\_ -> Signal.message addr msg)
+onDragEnd : msg -> Attribute msg
+onDragEnd msg =
+  on "dragend" (Json.succeed msg)
 
-onDragEnd : Signal.Address a -> a -> Attribute
-onDragEnd addr msg =
-  on "dragend" value (\_ -> Signal.message addr msg)
+onDragEnter : msg -> Attribute msg
+onDragEnter msg =
+  on "dragenter" (Json.succeed msg)
 
-onDragEnter : Signal.Address a -> a -> Attribute
-onDragEnter addr msg =
-  on "dragenter" value (\_ -> Signal.message addr msg)
-
-dragOverPrevent : Attribute
-dragOverPrevent =
-  Native.HtmlDrag.dragOverPrevent
+dragOverPrevent : msg -> Attribute msg
+dragOverPrevent msg =
+  onWithOptions "dragover" {stopPropagation = False, preventDefault = True} (Json.succeed msg)

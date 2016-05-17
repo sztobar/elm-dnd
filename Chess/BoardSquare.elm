@@ -1,8 +1,7 @@
-module Chess.BoardSquare where
+module Chess.BoardSquare exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Signal exposing (Address)
 
 import HtmlDrag exposing (..)
 
@@ -32,21 +31,25 @@ squareStyle black =
   ]
 
 
-view : Model -> Address Action -> Html
-view model address =
+view : Model -> Html Msg
+view model =
   let
-    {position, knight, isKnightDragged, canDrop} = model
-    {x, y} = position
+    {position, knight, isKnightDragged, canDrop} =
+      model
+
+    {x, y} =
+      position
+
     squareAttributes =
       [ style boardSquareStyle
-      , onDragEnter address (DragEnter position)
+      , onDragEnter (DragEnter position)
       ] ++ if canDrop then
-             [ onDrop address (Drop position), dragOverPrevent ]
+             [ onDrop (Drop position), dragOverPrevent NoOp ]
            else
              []
     squareContent =
       if knight == position then
-        [ knightView isKnightDragged address ]
+        [ knightView isKnightDragged ]
       else
         []
   in
@@ -67,18 +70,18 @@ knightStyle isDragged =
     , ("opacity", opacity)
     ]
 
-knightView : Bool -> Address Action -> Html
-knightView isDragged address =
+knightView : Bool -> Html Msg
+knightView isDragged =
   div
     [ style (knightStyle isDragged)
-    , onDragStart address DragStart
-    , onDragEnd address DragEnd
+    , onDragStart DragStart
+    , onDragEnd DragEnd
     , draggable "true"
-    ] [text "H" ]
-    {--] [text "♘" ]--}
+    --] [text "H" ]
+    ] [text "♘" ]
 
 
-overlayView : Model -> Html
+overlayView : Model -> Html Msg
 overlayView {isOver, canDrop} =
   let
     backgroundColor =

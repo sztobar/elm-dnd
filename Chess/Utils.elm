@@ -1,4 +1,4 @@
-module Chess.Utils where
+module Chess.Utils exposing (..)
 
 import Array
 
@@ -13,11 +13,12 @@ type alias Model =
   , tileOver : Maybe Position
   }
 
-type Action
+type Msg
   = DragStart
   | DragEnd
   | DragEnter Position
   | Drop Position
+  | NoOp
 
 boardLength : Int
 boardLength = 64

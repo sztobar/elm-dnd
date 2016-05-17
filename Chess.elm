@@ -1,9 +1,8 @@
-module Chess where
+module Chess exposing (..)
 
-import StartApp.Simple as StartApp
+import Html.App as Html
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Signal exposing (Address)
 
 import Chess.Board as Board
 import Chess.Utils exposing (..)
@@ -16,9 +15,9 @@ model =
   , tileOver = Nothing
   }
 
-update : Action -> Model -> Model
-update action model =
-  case action of
+update : Msg -> Model -> Model
+update msg model =
+  case msg of
     DragStart ->
       { model
       | isKnightDragged = True
@@ -41,8 +40,11 @@ update action model =
       , tileOver = Nothing
       }
 
-view : Address Action -> Model -> Html
-view address model =
+    _ ->
+      model
+
+view : Model -> Html Msg
+view model =
   div []
     [ div
       [ style
@@ -50,10 +52,10 @@ view address model =
         , ("height", "500px")
         , ("border", "1px solid gray")
         ]
-      ] [ Board.view model address ]
+      ] [ Board.view model ]
     ]
 
-main = StartApp.start
+main = Html.beginnerProgram
   { view = view
   , update = update
   , model = model
