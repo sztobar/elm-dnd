@@ -1,6 +1,5 @@
 module Chess exposing (..)
 
-import Html.App as Html
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
@@ -35,7 +34,7 @@ update msg model =
 
     Drop pos ->
       { model
-      | knight = pos 
+      | knight = pos
       , isKnightDragged = False
       , tileOver = Nothing
       }
@@ -55,7 +54,7 @@ view model =
       ] [ Board.view model ]
     ]
 
-main = Html.beginnerProgram
+main = beginnerProgram
   { view = view
   , update = update
   , model = model

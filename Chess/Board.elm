@@ -25,7 +25,7 @@ view model =
       squares
 
 squareStyle : List (String, String)
-squareStyle = 
+squareStyle =
   [ ("width", "12.5%")
   , ("height", "12.5%")
   ]
@@ -39,7 +39,6 @@ isTileOver tilePos {isKnightDragged, tileOver} =
         tilePos == pos
       Nothing ->
         False
-     
   else
     False
 
@@ -47,17 +46,16 @@ canDropKnight : Position -> Model -> Bool
 canDropKnight tilePos {isKnightDragged, knight} =
   if isKnightDragged then
     canMoveKnight knight tilePos
-     
   else
     False
 
 viewSquares : Model -> List (Html Msg)
-viewSquares model = 
+viewSquares model =
   List.map (\pos ->
     let
-      model' = 
+      model_ =
        { position = pos
-       , canDrop = canDropKnight pos model 
+       , canDrop = canDropKnight pos model
        , isOver = isTileOver pos model
        , isKnightDragged = model.isKnightDragged
        , knight = model.knight
@@ -65,5 +63,5 @@ viewSquares model =
     in
       div
         [ style squareStyle ]
-        [ BoardSquare.view model' ]
-  ) boardList 
+        [ BoardSquare.view model_ ]
+  ) boardList
